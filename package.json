@@ -1,0 +1,24 @@
+{
+  "name": "aug-compile",
+  "version": "1.0.0",
+  "description": "Get the most out of your runtime performance by compiling static augmented-ui configurations up front",
+  "main": "aug-compile-es6.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/propjockey/aug-compile.git"
+  },
+  "keywords": [
+    "augmented-ui",
+    "sci-fi",
+    "cyberpunk"
+  ],
+  "author": "James0x57",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/propjockey/aug-compile/issues"
+  },
+  "homepage": "https://github.com/propjockey/aug-compile#readme"
+}
