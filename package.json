@@ -1,6 +1,6 @@
 {
   "name": "aug-compile",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Get the most out of your runtime performance by compiling static augmented-ui configurations up front",
   "main": "aug-compile-es6.js",
   "scripts": {

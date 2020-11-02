@@ -61,7 +61,7 @@ const augCompileEl = function (augEl) {
   const clip2 = cs2.getPropertyValue("clip-path")
   if (clip2.length > 20) {
     const op = `opacity: ${cs2.getPropertyValue("opacity")};`
-    const bg = `background: ${cs2.getPropertyValue("background")};`
+    const bg = `background: ${cs2.getPropertyValue("background") || cs2.getPropertyValue("--aug-inlay-bg") || "var(--aug-inlay-bg)"};`
     augCompileSheet.insertRule( `[data-augmented-ui-compiled~="${id}"]::before { content: ""; ${webkit}clip-path: ${clip2}; ${op} ${bg} }`, x )
     x++
   }
@@ -69,7 +69,7 @@ const augCompileEl = function (augEl) {
   const clip3 = cs3.getPropertyValue("clip-path")
   if (clip3.length > 20) {
     const op = `opacity: ${cs3.getPropertyValue("opacity")};`
-    const bg = `background: ${cs3.getPropertyValue("background")};`
+    const bg = `background: ${cs3.getPropertyValue("background") || cs3.getPropertyValue("--aug-border-bg") || "var(--aug-border-bg)"};`
     augCompileSheet.insertRule( `[data-augmented-ui-compiled~="${id}"]::after { content: ""; ${webkit}clip-path: ${clip3}; ${op} ${bg} }`, x )
     x++
   }
