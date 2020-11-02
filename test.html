@@ -1,0 +1,56 @@
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css">
+
+<style>
+.aug-glow, .aug-glow > * {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  pointer-events: none;
+}
+.aug-glow {
+  filter: drop-shadow(0 0 12px skyblue)  drop-shadow(0 0 1px blue) brightness(1.5);
+}
+
+.my-augborder {
+  --test: , blue;
+  --aug-border-bg: linear-gradient(to bottom right, teal, rebeccapurple) var(--test);
+  --aug-tl: 40px;
+  --aug-tr: 30px;
+  --aug-br: 20px;
+  --aug-br-extend1: 25%;
+  --aug-br-extend2: 50%;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: black;
+  margin: 0; padding: 0;
+}
+.my-element {
+  padding: 40px;
+  text-align: center;
+  font-size: 40px;
+  font-family: sans-serif;
+  width: 450px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+</style>
+
+
+<div class="my-element">
+  <div class="aug-glow" aria-hidden="true">
+    <div data-augmented-ui="tl-clip br-2-clip-xy tr-round border compile" class="my-augborder"></div>
+  </div>
+  informal test
+</div>
+<script type="module">
+  import augCompileAll from './aug-compile-es6.js';
+  document.querySelector('link').addEventListener('load', () => augCompileAll())
+</script>
