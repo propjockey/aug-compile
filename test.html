@@ -1,56 +1,236 @@
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css">
 
 <style>
-.aug-glow, .aug-glow > * {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0px;
-  top: 0px;
-  pointer-events: none;
-}
-.aug-glow {
-  filter: drop-shadow(0 0 12px skyblue)  drop-shadow(0 0 1px blue) brightness(1.5);
-}
-
-.my-augborder {
-  --test: , blue;
-  --aug-border-bg: linear-gradient(to bottom right, teal, rebeccapurple) var(--test);
-  --aug-tl: 40px;
-  --aug-tr: 30px;
-  --aug-br: 20px;
-  --aug-br-extend1: 25%;
-  --aug-br-extend2: 50%;
-}
-
-html, body {
-  width: 100%; height: 100%;
-  background: black;
-  margin: 0; padding: 0;
-}
-.my-element {
-  padding: 40px;
-  text-align: center;
-  font-size: 40px;
-  font-family: sans-serif;
-  width: 450px;
-  height: 300px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-}
+  * {
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+  html {
+    font-size: 16px;
+  }
+  table {
+    width: 1200px;
+    border-collapse: collapse;
+  }
+  [colspan='3'] {
+    padding-left: 200px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  tbody :first-child td {
+    font-weight: bold;
+    text-align: center;
+  }
+  td {
+    text-align: center;
+    padding: 1rem;
+  }
+  .is-compiled {
+    display: inline-block;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    background: white;
+  }
+  .is-compiled::after {
+    content: " NOT COMPILED";
+    color: red;
+  }
+  [data-augmented-ui-compiled] ~ .is-compiled::after,
+  [data-augmented-ui-inlay-compiled] ~ .is-compiled::after,
+  [data-augmented-ui-border-compiled] ~ .is-compiled::after {
+    content: " COMPILED";
+    color: limegreen;
+  }
+  .test-el {
+    --aug-b-extend1: 40%;
+    --aug-tr-extend2: 50%;
+    width: 200px;
+    height: 100px;
+    background: #dddddd;
+    padding: 1rem;
+    text-align: center;
+    display: inline-block;
+  }
+  #compileall {
+    font-size: 1rem;
+  }
+  #resizeTestTable .test-el {
+    transition: width 5s linear, height 5s linear;
+  }
+  #resizeTestTable.transA td:nth-child(2) .test-el {
+    width: 300px;
+    height: 200px;
+  }
+  #resizeTestTable.transB td:nth-child(3) .test-el {
+    width: 300px;
+    height: 200px;
+  }
 </style>
 
 
-<div class="my-element">
-  <div class="aug-glow" aria-hidden="true">
-    <div data-augmented-ui="tl-clip br-2-clip-xy tr-round border compile" class="my-augborder"></div>
-  </div>
-  informal test
-</div>
+<table id="resizeTestTable">
+  <tbody>
+    <tr>
+      <td>Test</td>
+      <td>Base (Not Compiled)</td>
+      <td>Compiled</td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        augCompileAll() // compiles augmented elements on the next animation frame that have "compile" in their aug list, returns a promise
+        <div style="color: #777;">Should have compiled 13 augmented elements, inlays, borders, and delegates: <span id="compileall">0</span></div>
+      </td>
+    </tr>
+    <tr>
+      <td>No Inlay or Border</td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y"> TEST </div>
+      </td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y compile"> TEST </div><br>
+        <span class="is-compiled">This element ^ is</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Jusy Inlay</td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y inlay"> TEST </div>
+      </td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y inlay compile"> TEST </div><br>
+        <span class="is-compiled">This element ^ is</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Just Border</td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y border"> TEST </div>
+      </td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y border compile"> TEST </div><br>
+        <span class="is-compiled">This element ^ is</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Inlay and Border</td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y both"> TEST </div>
+      </td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y both compile"> TEST </div><br>
+        <span class="is-compiled">This element ^ is</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Delegated Inlay</td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y delegated-inlay">
+          <div data-augmented-ui-inlay></div>
+          <span class="is-compiled">delegate is<br></span>
+        </div>
+      </td>
+      <td>
+        <div class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y delegated-inlay compile">
+          <div data-augmented-ui-inlay></div>
+          <span class="is-compiled">delegate is<br></span>
+        </div><br>
+        <span class="is-compiled">This element ^ is</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Delegated Border, normal inlay</td>
+      <td>
+        <div id="transA" class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y inlay delegated-border">
+          <div data-augmented-ui-border></div>
+          <span class="is-compiled">delegate is<br></span>
+        </div>
+      </td>
+      <td>
+        <div id="transB" class="test-el" data-augmented-ui="tl-clip tr-2-clip-xy b-scoop l-round-y inlay delegated-border compile">
+          <div data-augmented-ui-border></div>
+          <span class="is-compiled">delegate is<br></span>
+        </div><br>
+        <span class="is-compiled">This element ^ is</span>
+      </td>
+    </tr>
+
+    <tr style="border-top: 1px solid #cccccc;">
+      <td>
+        Run animation speed test:<br>
+        <button onclick="resetSizes()">Reset</button>
+      </td>
+      <td><button onclick="doResizeA()">Animate uncompiled</button> result: <span id="fpsA">0</span> fps</td>
+      <td><button onclick="doResizeB()">Animate compiled</button> result: <span id="fpsB">0</span> fps</td>
+    </tr>
+
+    <tr style="border-top: 1px solid #cccccc;">
+      <td>
+        revert and compile one el
+      </td>
+      <td><button id="revertbtn">augCompileRevertEl</button> removed rules: <span id="revertCount"></span></td>
+      <td><button id="recompilebtn">augCompileEl</button> added rules: <span id="addCount"></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  const tbl = document.getElementById("resizeTestTable")
+  const transA = document.getElementById("transA")
+  const transB = document.getElementById("transB")
+  const fpsA = document.getElementById("fpsA")
+  const fpsB = document.getElementById("fpsB")
+
+  let isAnimating = true
+  let countA = 0
+  const bumpA = () => isAnimating && (++countA) && requestAnimationFrame(bumpA)
+  let countB = 0
+  const bumpB = () => isAnimating && (++countB) && requestAnimationFrame(bumpB)
+
+  const doResizeA = function () {
+    countA = 0
+    transA.addEventListener("transitionend", () => {
+      isAnimating = false
+      fpsA.innerHTML = Math.round(countA / 5)
+    }, { once: true })
+    tbl.classList.add("transA")
+    isAnimating = true
+    requestAnimationFrame(bumpA)
+  }
+  const doResizeB = function () {
+    countB = 0
+    transB.addEventListener("transitionend", () => {
+      isAnimating = false
+      fpsB.innerHTML = Math.round(countB / 5)
+    }, { once: true })
+    tbl.classList.add("transB")
+    isAnimating = true
+    requestAnimationFrame(bumpB)
+  }
+  const resetSizes = function () {
+    tbl.className = ""
+    fpsA.innerHTML = 0
+    fpsB.innerHTML = 0
+  }
+</script>
+
 <script type="module">
-  import augCompileAll from './aug-compile-es6.js';
-  document.querySelector('link').addEventListener('load', () => augCompileAll())
+  import {augCompileAll, augCompileRevertEl, augCompileEl} from './aug-compile-es6.js';
+  // const augEl = document.querySelector('[data-augmented-ui~="compile"]')
+  // const cs1 = getComputedStyle(augEl)
+  // const clip1 = cs1.getPropertyValue("clip-path")
+  // augCompileAll().then(w => console.log(w, clip1))
+  augCompileAll().then(count => {
+    var x = document.querySelector("#compileall")
+    x.innerHTML = count
+    x.style.color = (count === 13) ? "limegreen" : "red"
+  })
+
+  const countRemove = document.getElementById("revertCount")
+  const countAdd = document.getElementById("addCount")
+
+  const revertbtn = document.getElementById("revertbtn")
+  const recompilebtn = document.getElementById("recompilebtn")
+  revertbtn.addEventListener("click", () => countRemove.innerHTML = augCompileRevertEl(transB))
+  recompilebtn.addEventListener("click", () => augCompileEl(transB).then(x => countAdd.innerHTML = x))
 </script>
